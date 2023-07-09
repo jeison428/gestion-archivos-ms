@@ -3,29 +3,31 @@ package com.unicauca.maestria.api.gestionarchivosms.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
-@Table(name = "ACTAS")
+@Table(name = "OTROS_DOC")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Acta {
+public class OtroDoc {
 
     @Id
-    @Column(name = "ID_ACTA")
+    @Column(name = "IDOTRO_DOC")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idActa;
+    private Long idOtroDoc;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ID_DOC_MAESTRIA")
     private DocumentoMaestria idDocMaestria;
 
-    @Column(name = "NUMERO_ACTA")
-    private Long numeroActa;
+    @Column(name = "NOMBREDOCUMENTO")
+    private String nombreDocumento;
 
-    @Column(name = "FECHA_ACTA")
-    private Date fechaActa;
+    @Column(name = "VERSIONDOC")
+    private Long versionDoc;
+
+    @Column(name = "DESCRIPCION_DOCUMENTO")
+    private String descripcionDocumento;
 }
