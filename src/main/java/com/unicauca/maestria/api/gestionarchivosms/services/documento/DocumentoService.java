@@ -1,4 +1,4 @@
-package com.unicauca.maestria.api.gestionarchivosms.services;
+package com.unicauca.maestria.api.gestionarchivosms.services.documento;
 
 import com.unicauca.maestria.api.gestionarchivosms.domain.DocumentoMaestria;
 import org.springframework.http.ResponseEntity;

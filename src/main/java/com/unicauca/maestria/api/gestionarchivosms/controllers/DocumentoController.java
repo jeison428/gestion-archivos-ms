@@ -1,7 +1,7 @@
 package com.unicauca.maestria.api.gestionarchivosms.controllers;
 
 import com.unicauca.maestria.api.gestionarchivosms.domain.DocumentoMaestria;
-import com.unicauca.maestria.api.gestionarchivosms.services.DocumentoService;
+import com.unicauca.maestria.api.gestionarchivosms.services.documento.DocumentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
