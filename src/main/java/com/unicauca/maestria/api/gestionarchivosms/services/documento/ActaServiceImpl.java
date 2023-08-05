@@ -13,6 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -28,12 +34,48 @@ public class ActaServiceImpl implements ActaService {
         if (result.hasErrors()) {
             throw new FieldErrorException(result);
         }
-        System.out.println("aca lo guaarado ---- "+acta.getIdDocMaestria().getLinkDocumento());
-
+        acta.getIdDocMaestria().setLinkDocumento(this.guardarArchivo(acta.getIdDocMaestria().getLinkDocumento()));
         Acta actaDb = actaRepository.save(actaCrearMapper.toEntity(acta));
-        System.out.println("aca ya deberiaa estar el link real ----- "+actaDb.getIdDocMaestria().getLinkDocumento());
-
         return actaListarMapper.toDto(actaDb);
+    }
+
+    private String guardarArchivo(String archivoBase64){
+        try {
+            String[] data = archivoBase64.split("-");
+            byte[] archivoByte = Base64.getDecoder().decode(data[1]);
+            Date fechaActual = new Date();
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yy");
+            String fechaFormateada = formatoFecha.format(fechaActual);
+
+            String rutaCarpeta = "./files/" + fechaFormateada;
+            String rutaArchivo = rutaCarpeta + "/" + generateUniqueFileName() + "-" + data[0];
+            File carpeta = new File(rutaCarpeta);
+            OutputStream out = null;
+            if (!carpeta.exists()) {
+                if (carpeta.mkdirs()) {
+                    out = new FileOutputStream(rutaArchivo);
+                    out.write(archivoByte);
+                    out.close();
+                    return rutaArchivo;
+                }
+            }else{
+                out = new FileOutputStream(rutaArchivo);
+                out.write(archivoByte);
+                out.close();
+                return rutaArchivo;
+            }
+            return "Error al guardar el archivo";
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String generateUniqueFileName() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        String timestamp = dateFormat.format(new Date());
+        return timestamp;
     }
 
     @Override
