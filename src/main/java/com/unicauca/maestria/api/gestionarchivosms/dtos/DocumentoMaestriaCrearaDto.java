@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class DocumentoMaestriaCrearaDto {
 
     @NotNull

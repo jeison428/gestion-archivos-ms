@@ -24,8 +24,7 @@ public class FilesUtilities {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(archivoBytes);
 
             Detector detector = new DefaultDetector();
-            Metadata metadata = new Metadata();
-            MediaType mediaType = detector.detect(TikaInputStream.get(inputStream), metadata);
+            MediaType mediaType = detector.detect(TikaInputStream.get(inputStream), new Metadata());
 
             String nombreArchivo = mediaType.getType();
             String extension = detectExtension(inputStream);
