@@ -1,5 +1,6 @@
 package com.unicauca.maestria.api.gestionarchivosms.services.documento;
 
+import com.unicauca.maestria.api.gestionarchivosms.common.util.FilesUtilities;
 import com.unicauca.maestria.api.gestionarchivosms.domain.Oficio;
 import com.unicauca.maestria.api.gestionarchivosms.dtos.OficioCrearDto;
 import com.unicauca.maestria.api.gestionarchivosms.dtos.OficioListarDto;
@@ -29,6 +30,8 @@ public class OficioServiceImpl implements OficioService {
             throw new FieldErrorException(result);
         }
 
+        oficio.getIdDocMaestria().setEstado(true);
+        oficio.getIdDocMaestria().setLinkDocumento(FilesUtilities.guardarArchivo(oficio.getIdDocMaestria().getLinkDocumento()));
         Oficio oficioDb = oficioRepository.save(oficioCrearMapper.toEntity(oficio));
 
         return oficioListarMapper.toDto(oficioDb);
@@ -44,5 +47,33 @@ public class OficioServiceImpl implements OficioService {
     @Transactional(readOnly = true)
     public OficioListarDto buscarPorId(Long id) {
         return this.oficioRepository.findById(id).map(oficioListarMapper::toDto).orElseThrow(() -> new ResourceNotFoundException("Oficio con id: " + id + " No encontrada"));
+    }
+
+    @Override
+    public OficioListarDto editarOficio(Long id, OficioCrearDto oficioDto, BindingResult result) {
+        Oficio oficioTmp = oficioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Oficio con id: " + id + " No encontrada"));
+        Oficio responseOficio = null;
+        if (oficioTmp != null){
+            if (oficioDto.getIdDocMaestria().getLinkDocumento().compareTo(oficioTmp.getIdDocMaestria().getLinkDocumento()) != 0){
+                oficioDto.getIdDocMaestria().setLinkDocumento(FilesUtilities.guardarArchivo(oficioDto.getIdDocMaestria().getLinkDocumento()));
+                FilesUtilities.deleteFileExample(oficioTmp.getIdDocMaestria().getLinkDocumento());
+            }
+            updateOficioValues(oficioTmp, oficioDto);
+            responseOficio = oficioRepository.save(oficioTmp);
+        }
+        return oficioListarMapper.toDto(responseOficio);
+    }
+
+    private void updateOficioValues(Oficio oficio, OficioCrearDto oficioDto){
+        oficio.setAsuntoOfi(oficioDto.getAsuntoOfi());
+        oficio.setFechaOficio(oficioDto.getFechaOficio());
+        oficio.setNumeroOficio(oficioDto.getNumeroOficio());
+        oficio.getIdDocMaestria().setEstado(oficioDto.getIdDocMaestria().getEstado());
+        oficio.getIdDocMaestria().setLinkDocumento(oficioDto.getIdDocMaestria().getLinkDocumento());
+    }
+
+    @Override
+    public List<OficioListarDto> listarTodosByEstado(Boolean estado) {
+        return oficioListarMapper.toDtoList(this.oficioRepository.findByEstado(estado));
     }
 }

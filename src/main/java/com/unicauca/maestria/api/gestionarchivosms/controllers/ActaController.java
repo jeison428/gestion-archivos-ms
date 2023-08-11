@@ -28,14 +28,19 @@ public class ActaController {
     public ResponseEntity<List<ActaListarDto>> listarTodos(){
         return ResponseEntity.status(HttpStatus.OK).body(service.listarTodos());
     }
-/*
 
-    public ResponseEntity<DocumentoMaestria> buscarPorId(Long id){
-        return service.buscarPorId(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<ActaListarDto> buscaarPorId(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(service.buscarPorId(id));
     }
 
-    public ResponseEntity<DocumentoMaestria> editarDocumento(Long id, DocumentoMaestria documento){
-        return service.editarDocumento(id, documento);
+    @GetMapping("/estado/{estado}")
+    public ResponseEntity<List<ActaListarDto>> buscarPorEstado(@PathVariable Boolean estado){
+        return ResponseEntity.status(HttpStatus.OK).body(service.listarTodosByEstado(estado));
     }
- */
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ActaListarDto> editarActa(@PathVariable Long id, @Valid @RequestBody ActaCrearDto acta, BindingResult result){
+        return ResponseEntity.status(HttpStatus.OK).body(service.editarActa(id, acta, result));
+    }
 }

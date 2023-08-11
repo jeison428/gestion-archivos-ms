@@ -23,7 +23,7 @@ public class Oficio {
     private DocumentoMaestria idDocMaestria;
 
     @Column(name = "NUMOFICIO")
-    private String numeroOficio;
+    private Long numeroOficio;
 
     @Column(name = "FECHAOFICIO")
     private Date fechaOficio;

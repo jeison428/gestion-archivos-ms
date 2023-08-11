@@ -28,4 +28,19 @@ public class OtroDocController {
     public ResponseEntity<List<OtroDocListarDto>> listarTodos(){
         return ResponseEntity.status(HttpStatus.OK).body(service.listarTodos());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<OtroDocListarDto> buscaarPorId(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(service.buscarPorId(id));
+    }
+
+    @GetMapping("/estado/{estado}")
+    public ResponseEntity<List<OtroDocListarDto>> buscarPorEstado(@PathVariable Boolean estado){
+        return ResponseEntity.status(HttpStatus.OK).body(service.listarTodosByEstado(estado));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<OtroDocListarDto> editarOtroDoc(@PathVariable Long id, @Valid @RequestBody OtroDocCrearDto otroDoc, BindingResult result){
+        return ResponseEntity.status(HttpStatus.OK).body(service.editarOtroDoc(id, otroDoc, result));
+    }
 }

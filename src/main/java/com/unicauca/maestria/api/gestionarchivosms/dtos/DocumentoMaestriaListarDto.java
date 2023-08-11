@@ -11,4 +11,5 @@ public class DocumentoMaestriaListarDto {
 
     private Long idDocMaestria;
     private String linkDocumento;
+    private Boolean estado;
 }

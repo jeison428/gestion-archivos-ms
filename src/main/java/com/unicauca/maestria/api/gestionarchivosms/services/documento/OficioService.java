@@ -11,4 +11,6 @@ public interface OficioService {
     public OficioListarDto crear(OficioCrearDto oficio, BindingResult result);
     public List<OficioListarDto> listarTodos();
     public OficioListarDto buscarPorId(Long id);
+    public OficioListarDto editarOficio(Long id, OficioCrearDto oficio, BindingResult result);
+    public List<OficioListarDto> listarTodosByEstado(Boolean estado);
 }

@@ -1,5 +1,6 @@
 package com.unicauca.maestria.api.gestionarchivosms.services.documento;
 
+import com.unicauca.maestria.api.gestionarchivosms.common.util.FilesUtilities;
 import com.unicauca.maestria.api.gestionarchivosms.domain.Acta;
 import com.unicauca.maestria.api.gestionarchivosms.dtos.ActaCrearDto;
 import com.unicauca.maestria.api.gestionarchivosms.dtos.ActaListarDto;
@@ -13,12 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.Base64;
-import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -34,48 +29,10 @@ public class ActaServiceImpl implements ActaService {
         if (result.hasErrors()) {
             throw new FieldErrorException(result);
         }
-        acta.getIdDocMaestria().setLinkDocumento(this.guardarArchivo(acta.getIdDocMaestria().getLinkDocumento()));
+        acta.getIdDocMaestria().setEstado(true);
+        acta.getIdDocMaestria().setLinkDocumento(FilesUtilities.guardarArchivo(acta.getIdDocMaestria().getLinkDocumento()));
         Acta actaDb = actaRepository.save(actaCrearMapper.toEntity(acta));
         return actaListarMapper.toDto(actaDb);
-    }
-
-    private String guardarArchivo(String archivoBase64){
-        try {
-            String[] data = archivoBase64.split("-");
-            byte[] archivoByte = Base64.getDecoder().decode(data[1]);
-            Date fechaActual = new Date();
-            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yy");
-            String fechaFormateada = formatoFecha.format(fechaActual);
-
-            String rutaCarpeta = "./files/" + fechaFormateada;
-            String rutaArchivo = rutaCarpeta + "/" + generateUniqueFileName() + "-" + data[0];
-            File carpeta = new File(rutaCarpeta);
-            OutputStream out = null;
-            if (!carpeta.exists()) {
-                if (carpeta.mkdirs()) {
-                    out = new FileOutputStream(rutaArchivo);
-                    out.write(archivoByte);
-                    out.close();
-                    return rutaArchivo;
-                }
-            }else{
-                out = new FileOutputStream(rutaArchivo);
-                out.write(archivoByte);
-                out.close();
-                return rutaArchivo;
-            }
-            return "Error al guardar el archivo";
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static String generateUniqueFileName() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-        String timestamp = dateFormat.format(new Date());
-        return timestamp;
     }
 
     @Override
@@ -91,12 +48,28 @@ public class ActaServiceImpl implements ActaService {
     }
 
     @Override
-    public ActaListarDto editarActa(Long id, ActaCrearDto documento, BindingResult result) {
-        Acta documentoTmp = actaRepository.findById(id).orElse(null);
-        Acta responseDoc = null;
-        if (documentoTmp != null){
-            //responseDoc = actaRepository.save(documento);
+    public ActaListarDto editarActa(Long id, ActaCrearDto actaDto, BindingResult result) {
+        Acta actaTmp = actaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Acta con id: " + id + " No encontrada"));
+        Acta responseActa = null;
+        if (actaTmp != null){
+            if (actaDto.getIdDocMaestria().getLinkDocumento().compareTo(actaTmp.getIdDocMaestria().getLinkDocumento()) != 0){
+                actaDto.getIdDocMaestria().setLinkDocumento(FilesUtilities.guardarArchivo(actaDto.getIdDocMaestria().getLinkDocumento()));
+                FilesUtilities.deleteFileExample(actaTmp.getIdDocMaestria().getLinkDocumento());
+            }
+            updateActaValues(actaTmp, actaDto);
+            responseActa = actaRepository.save(actaTmp);
         }
-        return null;
+        return actaListarMapper.toDto(responseActa);
+    }
+
+    private void updateActaValues(Acta acta, ActaCrearDto actaDto){
+        acta.setFechaActa(actaDto.getFechaActa());
+        acta.setNumeroActa(actaDto.getNumeroActa());
+        acta.getIdDocMaestria().setEstado(actaDto.getIdDocMaestria().getEstado());
+        acta.getIdDocMaestria().setLinkDocumento(actaDto.getIdDocMaestria().getLinkDocumento());
+    }
+
+    public List<ActaListarDto> listarTodosByEstado(Boolean estado){
+        return actaListarMapper.toDtoList(this.actaRepository.findByEstado(estado));
     }
 }

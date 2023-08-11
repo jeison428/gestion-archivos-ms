@@ -14,7 +14,7 @@ public class OficioListarDto {
 
     private Long idOficio;
     private DocumentoMaestria idDocMaestria;
-    private String numeroOficio;
+    private Long numeroOficio;
     private Date fechaOficio;
     private String asuntoOfi;
 }

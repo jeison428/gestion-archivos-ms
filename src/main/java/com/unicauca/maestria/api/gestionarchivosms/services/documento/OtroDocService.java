@@ -13,4 +13,8 @@ public interface OtroDocService {
     public List<OtroDocListarDto> listarTodos() ;
 
     public OtroDocListarDto buscarPorId(Long id);
+
+    public OtroDocListarDto editarOtroDoc(Long id, OtroDocCrearDto otroDoc, BindingResult result);
+
+    public List<OtroDocListarDto> listarTodosByEstado(Boolean estado);
 }

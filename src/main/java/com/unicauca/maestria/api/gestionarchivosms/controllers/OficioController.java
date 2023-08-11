@@ -1,7 +1,6 @@
 package com.unicauca.maestria.api.gestionarchivosms.controllers;
 
-import com.unicauca.maestria.api.gestionarchivosms.dtos.OficioCrearDto;
-import com.unicauca.maestria.api.gestionarchivosms.dtos.OficioListarDto;
+import com.unicauca.maestria.api.gestionarchivosms.dtos.*;
 import com.unicauca.maestria.api.gestionarchivosms.services.documento.OficioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,5 +26,20 @@ public class OficioController {
     @GetMapping
     public ResponseEntity<List<OficioListarDto>> listarTodos(){
         return ResponseEntity.status(HttpStatus.OK).body(service.listarTodos());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<OficioListarDto> buscaarPorId(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(service.buscarPorId(id));
+    }
+
+    @GetMapping("/estado/{estado}")
+    public ResponseEntity<List<OficioListarDto>> buscarPorEstado(@PathVariable Boolean estado){
+        return ResponseEntity.status(HttpStatus.OK).body(service.listarTodosByEstado(estado));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<OficioListarDto> editarActa(@PathVariable Long id, @Valid @RequestBody OficioCrearDto oficio, BindingResult result){
+        return ResponseEntity.status(HttpStatus.OK).body(service.editarOficio(id, oficio, result));
     }
 }

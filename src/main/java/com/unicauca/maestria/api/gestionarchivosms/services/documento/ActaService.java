@@ -17,4 +17,5 @@ public interface ActaService {
 
     public ActaListarDto editarActa(Long id, ActaCrearDto acta, BindingResult result);
 
+    public List<ActaListarDto> listarTodosByEstado(Boolean estado);
 }

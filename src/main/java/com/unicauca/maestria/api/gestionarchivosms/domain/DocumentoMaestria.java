@@ -21,4 +21,7 @@ public class DocumentoMaestria {
     @Column(name = "LINK_DOCUMENTO")
     private String linkDocumento;
 
+    @Column(name = "ESTADO")
+    private Boolean estado;
+
 }
