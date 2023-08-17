@@ -2,17 +2,19 @@ package com.unicauca.maestria.api.gestionarchivosms.controllers;
 
 import com.unicauca.maestria.api.gestionarchivosms.dtos.ActaCrearDto;
 import com.unicauca.maestria.api.gestionarchivosms.dtos.ActaListarDto;
-import com.unicauca.maestria.api.gestionarchivosms.services.documento.ActaService;
+import com.unicauca.maestria.api.gestionarchivosms.services.acta.ActaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Validated
 @RestController
 @RequestMapping("/api/actas")
 @CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST, RequestMethod.PUT})

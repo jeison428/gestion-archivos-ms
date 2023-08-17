@@ -1,8 +1,5 @@
 package com.unicauca.maestria.api.gestionarchivosms.common.util;
 
-import org.apache.tika.detect.DefaultDetector;
-import org.apache.tika.detect.Detector;
-import org.apache.tika.io.TikaInputStream;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.mime.MediaType;
 import org.apache.tika.mime.MimeTypeException;
@@ -17,20 +14,15 @@ public class FilesUtilities {
 
     public static String guardarArchivo(String archivoBase64) {
         try {
-            byte[] archivoBytes = Base64.getDecoder().decode(archivoBase64);
+            String[] partesBase64 = archivoBase64.split("-");
+            byte[] archivoBytes = Base64.getDecoder().decode(partesBase64[1]);
             Date fechaActual = new Date();
             SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yy");
             String fechaFormateada = formatoFecha.format(fechaActual);
             ByteArrayInputStream inputStream = new ByteArrayInputStream(archivoBytes);
 
-            Detector detector = new DefaultDetector();
-            MediaType mediaType = detector.detect(TikaInputStream.get(inputStream), new Metadata());
-
-            String nombreArchivo = mediaType.getType();
-            String extension = detectExtension(inputStream);
-
             String rutaCarpeta = "./files/" + fechaFormateada;
-            String rutaArchivo = rutaCarpeta + "/" + generateUniqueFileName() + "-" + nombreArchivo + extension;
+            String rutaArchivo = rutaCarpeta + "/" + generateUniqueFileName() + "-" + partesBase64[0];
             File carpeta = new File(rutaCarpeta);
             OutputStream out = null;
             if (!carpeta.exists()) {
@@ -50,8 +42,6 @@ public class FilesUtilities {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (MimeTypeException e) {
             throw new RuntimeException(e);
         }
     }

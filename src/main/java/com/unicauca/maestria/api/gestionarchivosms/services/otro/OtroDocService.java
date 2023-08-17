@@ -1,4 +1,4 @@
-package com.unicauca.maestria.api.gestionarchivosms.services.documento;
+package com.unicauca.maestria.api.gestionarchivosms.services.otro;
 
 import com.unicauca.maestria.api.gestionarchivosms.dtos.OtroDocCrearDto;
 import com.unicauca.maestria.api.gestionarchivosms.dtos.OtroDocListarDto;

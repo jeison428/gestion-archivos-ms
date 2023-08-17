@@ -1,11 +1,12 @@
 package com.unicauca.maestria.api.gestionarchivosms.controllers;
 
 import com.unicauca.maestria.api.gestionarchivosms.dtos.*;
-import com.unicauca.maestria.api.gestionarchivosms.services.documento.OficioService;
+import com.unicauca.maestria.api.gestionarchivosms.services.oficio.OficioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@Validated
 @RequestMapping("/api/oficios")
 @CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST, RequestMethod.PUT})
 public class OficioController {

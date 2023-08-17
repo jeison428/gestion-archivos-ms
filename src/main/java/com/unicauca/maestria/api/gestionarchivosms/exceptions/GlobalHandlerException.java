@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +37,19 @@ public class GlobalHandlerException {
         });
 
         return new ResponseEntity<Object>(errors, estado);
+    }
+
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    public ResponseEntity<Object> handleValidationException(ConstraintViolationException ex) {
+        Map<String, Object> errors = new HashMap<>();
+
+        ex.getConstraintViolations().forEach(violation -> {
+            String attributeName = violation.getPropertyPath().toString();
+            String fieldName = attributeName.substring(attributeName.lastIndexOf('.') + 1);
+            errors.put(fieldName, "El campo: " + fieldName + ", " + violation.getMessage());
+        });
+
+        return ResponseEntity.badRequest().body(errors);
     }
 
     @ExceptionHandler(value = {FieldUniqueException.class})

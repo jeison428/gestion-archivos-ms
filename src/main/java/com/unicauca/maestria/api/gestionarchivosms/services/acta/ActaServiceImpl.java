@@ -1,4 +1,4 @@
-package com.unicauca.maestria.api.gestionarchivosms.services.documento;
+package com.unicauca.maestria.api.gestionarchivosms.services.acta;
 
 import com.unicauca.maestria.api.gestionarchivosms.common.util.FilesUtilities;
 import com.unicauca.maestria.api.gestionarchivosms.domain.Acta;

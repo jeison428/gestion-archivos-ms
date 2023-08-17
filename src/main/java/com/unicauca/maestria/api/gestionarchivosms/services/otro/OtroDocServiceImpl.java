@@ -1,8 +1,7 @@
-package com.unicauca.maestria.api.gestionarchivosms.services.documento;
+package com.unicauca.maestria.api.gestionarchivosms.services.otro;
 
 import com.unicauca.maestria.api.gestionarchivosms.common.util.FilesUtilities;
 import com.unicauca.maestria.api.gestionarchivosms.domain.OtroDoc;
-import com.unicauca.maestria.api.gestionarchivosms.dtos.ActaListarDto;
 import com.unicauca.maestria.api.gestionarchivosms.dtos.OtroDocCrearDto;
 import com.unicauca.maestria.api.gestionarchivosms.dtos.OtroDocListarDto;
 import com.unicauca.maestria.api.gestionarchivosms.exceptions.FieldErrorException;
