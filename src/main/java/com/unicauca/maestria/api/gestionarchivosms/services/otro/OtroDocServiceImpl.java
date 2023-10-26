@@ -77,5 +77,11 @@ public class OtroDocServiceImpl implements OtroDocService{
         return otroDocListarMapper.toDtoList(this.otroDocRepository.findByEstado(estado));
     }
 
+    @Override
+    public List<OtroDocListarDto> buscarPorNombreDocumento(String nombreDocumento){
+        return otroDocListarMapper.toDtoList(this.otroDocRepository.findByNombreDocumentoContainingIgnoreCase(nombreDocumento));
+    }
+
+
 
 }

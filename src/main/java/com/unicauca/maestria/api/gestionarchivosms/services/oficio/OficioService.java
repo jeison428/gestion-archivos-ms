@@ -13,4 +13,6 @@ public interface OficioService {
     public OficioListarDto buscarPorId(Long id);
     public OficioListarDto editarOficio(Long id, OficioCrearDto oficio, BindingResult result);
     public List<OficioListarDto> listarTodosByEstado(Boolean estado);
+    public List<OficioListarDto> buscarPorNumeroOficioFechOficio(Long numeroOficio, String fechaOficio);
+    public List<OficioListarDto> buscarPorNumeroOficio(Long numeroOficio);
 }

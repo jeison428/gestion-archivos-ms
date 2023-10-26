@@ -26,6 +26,7 @@ public class Oficio {
     private Long numeroOficio;
 
     @Column(name = "FECHAOFICIO")
+    @Temporal(TemporalType.DATE)
     private Date fechaOficio;
 
     @Column(name = "ASUNTOOFI")

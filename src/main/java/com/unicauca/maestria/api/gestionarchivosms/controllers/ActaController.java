@@ -17,33 +17,43 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping("/api/actas")
-@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST, RequestMethod.PUT})
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT})
 public class ActaController {
 
     private final ActaService service;
 
     @PostMapping
-    public ResponseEntity<ActaListarDto> crearActa(@Valid @RequestBody ActaCrearDto acta, BindingResult result){
+    public ResponseEntity<ActaListarDto> crearActa(@Valid @RequestBody ActaCrearDto acta, BindingResult result) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.crear(acta, result));
     }
 
     @GetMapping
-    public ResponseEntity<List<ActaListarDto>> listarTodos(){
+    public ResponseEntity<List<ActaListarDto>> listarTodos() {
         return ResponseEntity.status(HttpStatus.OK).body(service.listarTodos());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ActaListarDto> buscaarPorId(@PathVariable Long id){
+    public ResponseEntity<ActaListarDto> buscaarPorId(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.buscarPorId(id));
     }
 
     @GetMapping("/estado/{estado}")
-    public ResponseEntity<List<ActaListarDto>> buscarPorEstado(@PathVariable Boolean estado){
+    public ResponseEntity<List<ActaListarDto>> buscarPorEstado(@PathVariable Boolean estado) {
         return ResponseEntity.status(HttpStatus.OK).body(service.listarTodosByEstado(estado));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ActaListarDto> editarActa(@PathVariable Long id, @Valid @RequestBody ActaCrearDto acta, BindingResult result){
+    public ResponseEntity<ActaListarDto> editarActa(@PathVariable Long id, @Valid @RequestBody ActaCrearDto acta, BindingResult result) {
         return ResponseEntity.status(HttpStatus.OK).body(service.editarActa(id, acta, result));
+    }
+
+    @GetMapping("/numero/{numeroActa}/fecha")
+    public ResponseEntity<List<ActaListarDto>> buscarPorNumeroActaFechaActa(@PathVariable Long numeroActa, @RequestParam String fechaActa) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.buscarPorNumeroActaFechaActa(numeroActa, fechaActa));
+    }
+
+    @GetMapping("/numero/{numeroActa}")
+    public ResponseEntity<List<ActaListarDto>> buscarPorNumeroActa(@PathVariable Long numeroActa) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.buscarPorNumeroActa(numeroActa));
     }
 }

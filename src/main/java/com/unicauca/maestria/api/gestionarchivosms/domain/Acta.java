@@ -27,5 +27,6 @@ public class Acta {
     private Long numeroActa;
 
     @Column(name = "FECHA_ACTA")
+    @Temporal(TemporalType.DATE)
     private Date fechaActa;
 }

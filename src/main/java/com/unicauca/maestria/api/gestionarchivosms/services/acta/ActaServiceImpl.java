@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -71,5 +73,18 @@ public class ActaServiceImpl implements ActaService {
 
     public List<ActaListarDto> listarTodosByEstado(Boolean estado){
         return actaListarMapper.toDtoList(this.actaRepository.findByEstado(estado));
+    }
+
+    @Override
+    public List<ActaListarDto> buscarPorNumeroActaFechaActa(Long numeroActa, String fechaActa){
+        List<ActaListarDto> response = new ArrayList<>();
+        Date fecha = new Date(fechaActa);
+        response.addAll(this.actaListarMapper.toDtoList(this.actaRepository.findByNumeroActaAndFechaActa(numeroActa, fecha)));
+        return response;
+    }
+
+    @Override
+    public List<ActaListarDto> buscarPorNumeroActa(Long numeroActa){
+        return this.actaListarMapper.toDtoList(this.actaRepository.findByNumeroActa(numeroActa));
     }
 }

@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -75,5 +77,18 @@ public class OficioServiceImpl implements OficioService {
     @Override
     public List<OficioListarDto> listarTodosByEstado(Boolean estado) {
         return oficioListarMapper.toDtoList(this.oficioRepository.findByEstado(estado));
+    }
+
+    @Override
+    public List<OficioListarDto> buscarPorNumeroOficioFechOficio(Long numeroOficio, String fechaOficio) {
+        List<OficioListarDto> response = new ArrayList<>();
+        Date fecha = new Date(fechaOficio);
+        response.addAll(oficioListarMapper.toDtoList(this.oficioRepository.findByNumeroOficioAndFechaOficio(numeroOficio, fecha)));
+        return response;
+    }
+
+    @Override
+    public List<OficioListarDto> buscarPorNumeroOficio(Long numeroOficio) {
+        return oficioListarMapper.toDtoList(this.oficioRepository.findByNumeroOficio(numeroOficio));
     }
 }

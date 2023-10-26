@@ -46,4 +46,9 @@ public class OtroDocController {
     public ResponseEntity<OtroDocListarDto> editarOtroDoc(@PathVariable Long id, @Valid @RequestBody OtroDocCrearDto otroDoc, BindingResult result){
         return ResponseEntity.status(HttpStatus.OK).body(service.editarOtroDoc(id, otroDoc, result));
     }
+
+    @GetMapping("/nombre/{nombreDocumento}")
+    public ResponseEntity<List<OtroDocListarDto>> buscarPorNombreDocumento(@PathVariable String nombreDocumento) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.buscarPorNombreDocumento(nombreDocumento));
+    }
 }

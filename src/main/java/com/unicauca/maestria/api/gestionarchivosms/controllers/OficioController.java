@@ -45,4 +45,14 @@ public class OficioController {
     public ResponseEntity<OficioListarDto> editarActa(@PathVariable Long id, @Valid @RequestBody OficioCrearDto oficio, BindingResult result){
         return ResponseEntity.status(HttpStatus.OK).body(service.editarOficio(id, oficio, result));
     }
+
+    @GetMapping("/numero/{numeroOficio}/fecha")
+    public ResponseEntity<List<OficioListarDto>> buscarPorNumeroActaFechaActa(@PathVariable Long numeroOficio, @RequestParam String fechaOficio) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.buscarPorNumeroOficioFechOficio(numeroOficio, fechaOficio));
+    }
+
+    @GetMapping("/numero/{numeroOficio}")
+    public ResponseEntity<List<OficioListarDto>> buscarPorNumeroActa(@PathVariable Long numeroOficio) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.buscarPorNumeroOficio(numeroOficio));
+    }
 }

@@ -15,4 +15,6 @@ public interface OtroDocRepository extends JpaRepository<OtroDoc, Long> {
             nativeQuery = true
     )
     public List<OtroDoc> findByEstado(@Param("estado") Boolean estado);
+
+    public List<OtroDoc> findByNombreDocumentoContainingIgnoreCase(String nombreDocumento);
 }

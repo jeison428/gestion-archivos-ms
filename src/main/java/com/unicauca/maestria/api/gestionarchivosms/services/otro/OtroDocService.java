@@ -17,4 +17,7 @@ public interface OtroDocService {
     public OtroDocListarDto editarOtroDoc(Long id, OtroDocCrearDto otroDoc, BindingResult result);
 
     public List<OtroDocListarDto> listarTodosByEstado(Boolean estado);
+
+    public List<OtroDocListarDto> buscarPorNombreDocumento(String nombreDocumento);
+
 }
